@@ -84,3 +84,5 @@ crashlytics-build.properties
 fabric.properties
 
 .idea/
+
+config/default.properties

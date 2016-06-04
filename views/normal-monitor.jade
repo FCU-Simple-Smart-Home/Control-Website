@@ -1,16 +1,59 @@
 extends layout
 
+block css
+    style.
+        .floor_plan_element {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
 block content
     div(class='container')
         div(class="page-header")
             h1 一般偵測
         h2 平面圖
         div(class="text-center")
-            div()
-                img(src="/images/floor_plan.png")
+            div(style="position: relative; display: inline-block")
+                img(id="floor_plan" src="/images/floor_plan.png" class="img-responsive")
+                div(id="room0" class="floor_plan_element" style="height: 202px; width: 402px; background-color: rgba(0, 255, 0, 0.5)")
+                div(id="room1" class="floor_plan_element" style="height: 149px; width: 198px; background-color: rgba(0, 255, 0, 0.5)")
+                div(id="room2" class="floor_plan_element" style="height: 149px; width: 198px; background-color: rgba(0, 255, 0, 0.5)")
         h2 偵測器資料&nbsp;
             small (更新頻率：5分鐘)
         h3 溫度
         h3 濕度
         h3 土壤偵測
         h3 細懸浮微粒
+
+block javascript
+    script(type="text/javascript").
+        $(resizeRoom);
+
+        $(window).resize(resizeRoom);
+
+        function resizeRoom() {
+            var $floorPlan = $('#floor_plan');
+            var scale = $floorPlan.width() / $floorPlan[0].naturalWidth;
+            var size = [
+                {x: 51 + 201, y: 201 + 101},
+                {x: 51 + 99, y: 50 + 74.5},
+                {x: 251 + 99, y: 50 + 74.5}
+            ];
+
+            for (var i = 0; i < 3; i++) {
+                var transform =
+                        "translate(-50%, -50%)" +
+                        "scale(" + scale + ")" +
+                        "translate(" + size[i].x + "px," + size[i].y + "px)";
+
+                $('#room' + i).css({
+                    '-ms-transform': transform,
+                    '-webkit-transform': transform,
+                    '-moz-transform': transform,
+                    '-o-transform': transform,
+                    'transform': transform
+                });
+            }
+
+        }

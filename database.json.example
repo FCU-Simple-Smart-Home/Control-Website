@@ -1,0 +1,19 @@
+{
+  "dev": {
+    "driver": "mysql",
+    "user": "IOT",
+    "password": "forge2048",
+    "database": "fcu_simple_smart_home"
+  },
+  "test": {
+    "driver": "sqlite3",
+    "filename": ":memory:"
+  },
+  "prod": {
+    "driver": "mysql",
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "root"
+    "database": "fcu_simple_smart_home"
+  }
+}

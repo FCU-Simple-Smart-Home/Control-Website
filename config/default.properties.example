@@ -1,2 +1,8 @@
 # MQTT
 mqtt.broker.ip = 127.0.0.1
+
+# mysql
+mysql.host = 127.0.0.1
+mysql.user = IOT
+mysql.password = forge2048
+mysql.database = fcu_simple_smart_home

@@ -1,40 +1,23 @@
-var mysql = require('./mysql.js');
+var temperature = require('./model/temperature.js');
 
 var mqtt = require('mqtt');
 var client = undefined;
 
-function saveTemperature(val) {
-    if (!Number.isInteger(val)) {
-        console.log("val is not a number");
-        return false;
-    }
+exports.initMqttClient = function (host) {
+    client = mqtt.connect('mqtt://' + host);
 
-    mysql.pool.query('INSERT INTO temperature SET ?', {value: val, saved: mysql.getNowSqlTimestamp()}, function (err, result) {
-        if (err) {
-            console.log(err);
-        }
+    client.on('connect', function () {
+        console.log('MQTT connect success.');
+        // subscribe
+        client.subscribe("sensor_temperature");
     });
 
-    return true;
-}
+    client.on('message', function (topic, message, packet) {
+        var msg = message.toString();
+        console.log(topic, msg);
 
-exports.initMqttClient =
-    function initMqttClient(host) {
-        client = mqtt.connect('mqtt://' + host);
-
-        client.on('connect', function () {
-            console.log('MQTT connect success.');
-            // subscribe
-            client.subscribe("sensor_temperature");
-        });
-
-        client.on('message', function (topic, message, packet) {
-            var msg = message.toString();
-            console.log(topic, msg);
-
-            if (topic == 'sensor_temperature') {
-                saveTemperature(parseInt(msg));
-            }
-        });
-
-    };
+        if (topic == 'sensor_temperature') {
+            temperature.saveTemperature(parseInt(msg));
+        }
+    });
+};

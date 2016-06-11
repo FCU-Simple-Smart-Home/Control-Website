@@ -21,13 +21,41 @@ block content
         h2 偵測器資料&nbsp;
             small (更新頻率：5秒)
         h3 溫度
+            div(id="chart_temperature")
         h3 濕度
+            div(id="chart_humidity")
         h3 瓦斯
+            div(id="chart_gas")
         h3 CO
+            div(id="chart_co")
 
 block javascript
+    script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
     script(type="text/javascript").
         $(resizeRoom);
+
+        $(function () {
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages': ['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(function () {
+                drawLineChart(!{JSON.stringify(data_temperature)}, 'chart_temperature');
+            });
+        });
+
+        function drawLineChart(data, div_name) {
+            var data = google.visualization.arrayToDataTable(data);
+
+            var options = {
+                curveType: 'function',
+                legend: {position: 'none'}
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(div_name));
+
+            chart.draw(data, options);
+        }
 
         $(window).resize(resizeRoom);
 

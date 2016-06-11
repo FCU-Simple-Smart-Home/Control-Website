@@ -7,7 +7,17 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/normal-monitor', function (req, res, next) {
-    res.render('normal-monitor', {title: '一般偵測 - FCU Simple Smart Home'});
+    var data_temperature = [
+        ['Time', 'Sales'],
+        ['2004', 1000],
+        ['2005', 1170],
+        ['2006', 660],
+        ['2007', 1030]
+    ];
+    res.render('normal-monitor', {
+        title: '一般偵測 - FCU Simple Smart Home',
+        data_temperature: data_temperature
+    });
 });
 
 router.get('/appliance-control', function (req, res, next) {

@@ -4,8 +4,8 @@ var type = dbm.dataType;
 exports.up = function (db, callback) {
     db.createTable('temperature', {
         id: {type: 'int', primaryKey: true, autoIncrement: true},
-        value: 'int',
-        saved: {type: 'timestamp', unique: true}
+        value: {type: 'int', notNull:true},
+        saved: {type: 'timestamp', notNull:true, unique: true}
     }, callback);
 };
 

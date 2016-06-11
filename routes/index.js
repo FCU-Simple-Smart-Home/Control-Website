@@ -1,3 +1,5 @@
+var mysql = require('../mysql.js');
+var moment = require('moment');
 var express = require('express');
 var router = express.Router();
 
@@ -8,16 +10,29 @@ router.get('/', function (req, res, next) {
 
 router.get('/normal-monitor', function (req, res, next) {
     var data_temperature = [
-        ['Time', 'Sales'],
-        ['2004', 1000],
-        ['2005', 1170],
-        ['2006', 660],
-        ['2007', 1030]
+        ['Time', 'Sales']
     ];
-    res.render('normal-monitor', {
-        title: '一般偵測 - FCU Simple Smart Home',
-        data_temperature: data_temperature
+
+    // 取得 5 min 內的溫度
+    var now = moment();
+    mysql.pool.query('SELECT * FROM temperature WHERE saved >= ? AND saved <= ?', [mysql.getSqlTimestamp(moment(now).subtract(5, 'minutes')), mysql.getSqlTimestamp(now)], function (err, result) {
+        if (err) console.log(err);
+
+        console.log(result);
+        for (var i in result) {
+            data_temperature.push([
+                result[i].saved,
+                result[i].value
+            ]);
+        }
+
+        res.render('normal-monitor', {
+            title: '一般偵測 - FCU Simple Smart Home',
+            data_temperature: data_temperature
+        });
     });
+
+
 });
 
 router.get('/appliance-control', function (req, res, next) {

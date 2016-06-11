@@ -1,11 +1,7 @@
 var mysql = require('./mysql.js');
-var moment = require('moment');
+
 var mqtt = require('mqtt');
 var client = undefined;
-
-function getNowSqlTimestamp() {
-    return moment().format('YYYY-MM-DD HH:mm:ss');
-}
 
 function saveTemperature(val) {
     if (!Number.isInteger(val)) {
@@ -13,7 +9,7 @@ function saveTemperature(val) {
         return false;
     }
 
-    mysql.pool.query('INSERT INTO temperature SET ?', {value: val, saved: getNowSqlTimestamp()}, function (err, result) {
+    mysql.pool.query('INSERT INTO temperature SET ?', {value: val, saved: mysql.getNowSqlTimestamp()}, function (err, result) {
         if (err) {
             console.log(err);
         }

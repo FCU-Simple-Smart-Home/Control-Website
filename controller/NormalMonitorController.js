@@ -6,6 +6,10 @@ exports.index = function index(callback) {
     ];
 
     temperature.get5MinData(function (result) {
+        if (result.length == 0) {
+            data_temperature.push(['', 0]);
+        }
+
         for (var i in result) {
             data_temperature.push([
                 result[i].saved,

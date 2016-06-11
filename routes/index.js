@@ -10,10 +10,6 @@ router.get('/normal-monitor', function (req, res, next) {
     res.render('normal-monitor', {title: '一般偵測 - FCU Simple Smart Home'});
 });
 
-router.get('/danger-monitor', function (req, res, next) {
-    res.render('danger-monitor', {title: '危險偵測 - FCU Simple Smart Home'});
-});
-
 router.get('/appliance-control', function (req, res, next) {
     res.render('appliance-control', {title: '家電控制 - FCU Simple Smart Home'});
 });

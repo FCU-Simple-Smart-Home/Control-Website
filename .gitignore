@@ -86,3 +86,4 @@ fabric.properties
 .idea/
 
 config/default.properties
+database.json

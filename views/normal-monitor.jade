@@ -41,6 +41,7 @@ block javascript
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(function () {
                 drawLineChart(!{JSON.stringify(data_temperature)}, 'chart_temperature');
+                drawLineChart(!{JSON.stringify(data_humidity)}, 'chart_humidity');
             });
         });
 

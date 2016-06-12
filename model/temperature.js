@@ -7,5 +7,5 @@ exports.get5MinData = function (callback) {
 };
 
 exports.saveTemperature = function (val) {
-    SensorBase.get5MinData(table_name, val);
+    SensorBase.save(table_name, val);
 };

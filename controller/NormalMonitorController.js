@@ -1,22 +1,32 @@
+var merge = require('merge');
+
 var temperature = require('../model/temperature.js');
+var humidity = require('../model/humidity.js');
 
 exports.index = function index(callback) {
-    var data_temperature = [
-        ['Time', 'Sales']
-    ];
-
     temperature.get5MinData(function (result) {
-        if (result.length == 0) {
-            data_temperature.push(['', 0]);
-        }
-
-        for (var i in result) {
-            data_temperature.push([
-                result[i].saved,
-                result[i].value
-            ]);
-        }
-
-        callback({data_temperature: data_temperature});
+        var data = {data_temperature: handleResult('temperature', result)};
+        humidity.get5MinData(function (result) {
+            callback(merge(data, {data_humidity: handleResult('humidity', result)}));
+        });
     });
 };
+
+function handleResult(title, result) {
+    var data = [
+        ['Time', title]
+    ];
+
+    if (result.length == 0) {
+        data.push(['', 0]);
+    }
+
+    for (var i in result) {
+        data.push([
+            result[i].saved,
+            result[i].value
+        ]);
+    }
+
+    return data;
+}

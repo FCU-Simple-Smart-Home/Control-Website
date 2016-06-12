@@ -1,4 +1,3 @@
-
 var express = require('express');
 var merge = require('merge');
 var normalMonitorController = require('../controller/NormalMonitorController.js');

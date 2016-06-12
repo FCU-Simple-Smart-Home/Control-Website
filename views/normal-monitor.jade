@@ -42,6 +42,8 @@ block javascript
             google.charts.setOnLoadCallback(function () {
                 drawLineChart(!{JSON.stringify(data_temperature)}, 'chart_temperature');
                 drawLineChart(!{JSON.stringify(data_humidity)}, 'chart_humidity');
+                drawLineChart(!{JSON.stringify(data_gas)}, 'chart_gas');
+                drawLineChart(!{JSON.stringify(data_co)}, 'chart_co');
             });
         });
 

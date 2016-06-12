@@ -4,6 +4,7 @@ var temperature = require('../model/temperature.js');
 var humidity = require('../model/humidity.js');
 
 exports.index = function index(callback) {
+    // FIXME: callback hell
     temperature.get5MinData(function (result) {
         var data = {data_temperature: handleResult('temperature', result)};
         humidity.get5MinData(function (result) {

@@ -19,6 +19,7 @@
     "mqtt": "^1.10.0",
     "mysql": "^2.10.2",
     "properties": "^1.2.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "socket.io": "^1.4.6"
   }
 }

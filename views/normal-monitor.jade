@@ -47,7 +47,7 @@ block javascript
         });
 
         function drawLineChart(data, div_name) {
-            var data = google.visualization.arrayToDataTable(data);
+            var dataTable = google.visualization.arrayToDataTable(data);
 
             var options = {
                 curveType: 'function',
@@ -56,6 +56,6 @@ block javascript
 
             var chart = new google.visualization.LineChart(document.getElementById(div_name));
 
-            chart.draw(data, options);
+            chart.draw(dataTable, options);
         }
 

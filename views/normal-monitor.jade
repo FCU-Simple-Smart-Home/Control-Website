@@ -51,7 +51,16 @@ block javascript
 
             var options = {
                 curveType: 'function',
-                legend: {position: 'none'}
+                legend: {position: 'none'},
+                hAxis: {
+                    gridlines: {
+                        count: -1,
+                        units: {
+                            days: {format: ['MMM dd']},
+                            hours: {format: ['HH:mm', 'ha']},
+                        }
+                    }
+                }
             };
 
             var chart = new google.visualization.LineChart(document.getElementById(div_name));

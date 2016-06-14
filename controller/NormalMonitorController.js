@@ -1,4 +1,6 @@
 var merge = require('merge');
+var moment = require('moment');
+const util = require('util');
 
 var temperature = require('../model/temperature.js');
 var humidity = require('../model/humidity.js');
@@ -23,7 +25,7 @@ exports.index = function index(callback) {
 
 function handleResult(title, result) {
     var data = [
-        ['Time', title]
+        [{label: 'Times', type: 'date'}, title]
     ];
 
     if (result.length == 0) {
@@ -31,8 +33,9 @@ function handleResult(title, result) {
     }
 
     for (var i in result) {
+        var time = moment(result[i].saved);
         data.push([
-            result[i].saved,
+            util.format('Date(%d, %d, %d, %d, %d, %d)', time.year(), time.month(), time.date(), time.hour(), time.minute(), time.second()),
             result[i].value
         ]);
     }

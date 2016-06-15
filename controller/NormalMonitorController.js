@@ -1,11 +1,10 @@
 var merge = require('merge');
-var moment = require('moment');
-const util = require('util');
 
 var temperature = require('../model/temperature.js');
 var humidity = require('../model/humidity.js');
 var gas = require('../model/gas.js');
 var co = require('../model/co.js');
+var timestamp = require('../timestamp.js');
 
 exports.index = function index(callback) {
     // FIXME: callback hell
@@ -33,9 +32,8 @@ function handleResult(title, result) {
     }
 
     for (var i in result) {
-        var time = moment(result[i].saved);
         data.push([
-            util.format('Date(%d, %d, %d, %d, %d, %d)', time.year(), time.month(), time.date(), time.hour(), time.minute(), time.second()),
+            timestamp.toChartDateString(result[i].saved),
             result[i].value
         ]);
     }

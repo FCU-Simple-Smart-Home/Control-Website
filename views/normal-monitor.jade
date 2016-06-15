@@ -18,16 +18,25 @@ block content
                 img(id="floor_plan" src="/images/floor_plan.png" class="img-responsive")
                 div(id="room0" class="floor_plan_element" style="height: 202px; width: 402px; background-color: inherit")
                 div(id="room1" class="floor_plan_element" style="height: 149px; width: 198px; background-color: inherit")
+        h2 偵測器
+        ul(class="list-group")
+            li(class="list-group-item")
+                i(class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;火災偵測
+            li(class="list-group-item")
+                i(class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;窗戶偵測
+
         h2 偵測器資料&nbsp;
             small (更新頻率：5秒)
         h3 溫度
-            div(id="chart_temperature")
+        div(id="chart_temperature")
         h3 濕度
-            div(id="chart_humidity")
+        div(id="chart_humidity")
         h3 瓦斯
-            div(id="chart_gas")
+        div(id="chart_gas")
         h3 CO
-            div(id="chart_co")
+        div(id="chart_co")
 
 block javascript
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js")

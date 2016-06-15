@@ -7,7 +7,18 @@ io.on('connection', function (socket) {
     socket.on('add-channel', function (channel) {
         socket.join(channel);
         
-        if (channel == 'appliance-control') {
+        if (channel == 'normal-monitor') {
+            mqtt.publish('sensor_human_infrared_0', 'status');
+            mqtt.publish('sensor_human_infrared_1', 'status');
+        }
+        else if (channel == 'appliance-control') {
+            mqtt.publish('led_0', 'status');
+            mqtt.publish('led_1', 'status');
+            mqtt.publish('led_2', 'status');
+
+            mqtt.publish('plug_0', 'status');
+            mqtt.publish('plug_1', 'status');
+            
             socket.on('set-appliance', function (data) {
                 console.log(data);
                 mqtt.publish(data.name, data.value ? "on" : "off");

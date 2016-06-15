@@ -8,9 +8,6 @@ var timestamp = require('../timestamp.js');
 var mqtt = require('../mqtt.js');
 
 exports.index = function index(callback) {
-    mqtt.publish('sensor_human_infrared_0', 'status');
-    mqtt.publish('sensor_human_infrared_1', 'status');
-    
     // FIXME: callback hell
     temperature.get5MinData(function (result) {
         var data = {data_temperature: handleResult('temperature', result)};

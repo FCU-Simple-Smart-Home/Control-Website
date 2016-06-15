@@ -15,13 +15,18 @@ exports.get5MinData = function (table_name, callback) {
     );
 };
 
-exports.save = function (table_name, val) {
+exports.save = function (table_name, val, callback) {
     if (!Number.isInteger(val)) {
         console.log("val is not a number");
         return;
     }
 
-    mysql.pool.query('INSERT INTO ' + table_name + ' SET ?', {value: val, saved: mysql.getNowSqlTimestamp()}, function (err, result) {
+    var saved = mysql.getNowSqlTimestamp();
+    mysql.pool.query('INSERT INTO ' + table_name + ' SET ?', {value: val, saved: saved}, function (err, result) {
         if (err) console.log(err);
+        
+        if (callback !== undefined) {
+            callback(val, saved);
+        }
     });
 };

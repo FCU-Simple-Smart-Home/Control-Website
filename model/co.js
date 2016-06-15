@@ -6,6 +6,6 @@ exports.get5MinData = function (callback) {
     SensorBase.get5MinData(table_name, callback);
 };
 
-exports.saveCO = function (val) {
-    SensorBase.save(table_name, val);
+exports.saveCO = function (val, callback) {
+    SensorBase.save(table_name, val, callback);
 };

@@ -2,6 +2,7 @@ var temperature = require('./model/temperature.js');
 var humidity = require('./model/humidity.js');
 var gas = require('./model/gas.js');
 var co = require('./model/co.js');
+var socket = require('./socket.js');
 
 var mqtt = require('mqtt');
 var client = undefined;
@@ -23,7 +24,9 @@ exports.initMqttClient = function (host) {
         console.log(topic, msg);
 
         if (topic == 'sensor_temperature') {
-            temperature.saveTemperature(parseInt(msg));
+            temperature.saveTemperature(parseInt(msg), function (val, saved) {
+                socket.updateNormalMonitorChart({chart: 'temperature', val: val, saved: saved})
+            });
         }
         else if (topic == 'sensor_humidity') {
             humidity.saveHumidity(parseInt(msg));

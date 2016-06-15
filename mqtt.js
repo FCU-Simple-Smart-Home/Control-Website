@@ -25,17 +25,23 @@ exports.initMqttClient = function (host) {
 
         if (topic == 'sensor_temperature') {
             temperature.saveTemperature(parseInt(msg), function (val, saved) {
-                socket.updateNormalMonitorChart({chart: 'temperature', val: val, saved: saved})
+                socket.updateNormalMonitorChart({chart: 'chart_temperature', val: val, saved: saved})
             });
         }
         else if (topic == 'sensor_humidity') {
-            humidity.saveHumidity(parseInt(msg));
+            humidity.saveHumidity(parseInt(msg), function (val, saved) {
+                socket.updateNormalMonitorChart({chart: 'chart_humidity', val: val, saved: saved})
+            });
         }
         else if (topic == 'sensor_gas') {
-            gas.saveGas(parseInt(msg));
+            gas.saveGas(parseInt(msg), function (val, saved) {
+                socket.updateNormalMonitorChart({chart: 'chart_gas', val: val, saved: saved})
+            });
         }
         else if (topic == 'sensor_co') {
-            co.saveCO(parseInt(msg));
+            co.saveCO(parseInt(msg), function (val, saved) {
+                socket.updateNormalMonitorChart({chart: 'chart_co', val: val, saved: saved})
+            });
         }
     });
 };

@@ -4,7 +4,7 @@ block css
     link(rel='stylesheet', href='/css/bootstrap-switch.min.css')
 
 block content
-    div(class='container')
+    div(class='container' style="margin-bottom: 50px;")
         div(class="page-header")
             h1 家電控制
         h2 LED電燈
@@ -19,12 +19,14 @@ block content
         input(type="checkbox" name="plug_0")
         h3 插座 2
         input(type="checkbox" name="plug_1")
+        h2 大門
+        input(type="checkbox" name="door")
 
 block javascript
     script(type="text/javascript" src="javascripts/bootstrap-switch.min.js")
     script(type="text/javascript").
         $(function () {
-            var names = ['led_0', 'led_1', 'led_2', 'plug_0', 'plug_1'];
+            var names = ['led_0', 'led_1', 'led_2', 'plug_0', 'plug_1', 'door'];
             for (var i in names) {
                 var bs_switch = $("[name='" + names[i] + "']");
                 bs_switch.bootstrapSwitch();

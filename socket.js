@@ -21,6 +21,8 @@ io.on('connection', function (socket) {
 
             mqtt.publish('plug_0', 'status');
             mqtt.publish('plug_1', 'status');
+
+            mqtt.publish('door', 'status');
             
             socket.on('set-appliance', function (data) {
                 console.log(data);

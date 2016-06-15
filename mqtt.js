@@ -29,6 +29,8 @@ exports.initMqttClient = function (host) {
 
         client.subscribe("fire_detect");
         client.subscribe("window_detect");
+
+        client.subscribe("door");
     });
 
     client.on('message', function (topic, message, packet) {
@@ -60,7 +62,8 @@ exports.initMqttClient = function (host) {
             topic == 'led_1' || 
             topic == 'led_2' || 
             topic == 'plug_0' || 
-            topic == 'plug_1') {
+            topic == 'plug_1' ||
+            topic == 'door') {
             
             // 發送訊息到客戶端更新
             if (msg == "status_on" || msg == "status_off") {

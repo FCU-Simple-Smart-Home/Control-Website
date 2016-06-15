@@ -86,7 +86,7 @@ block javascript
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
     script(type="text/javascript").
         $(function () {
-            socket = io("http://127.0.0.1:3001");
+            socket = io("http://" + window.location.hostname + ":3001");
 
             socket.on("connect", function () {
                 socket.emit('add-channel', 'normal-monitor');

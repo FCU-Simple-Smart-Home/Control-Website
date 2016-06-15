@@ -24,12 +24,15 @@ block javascript
     script(type="text/javascript" src="javascripts/bootstrap-switch.min.js")
     script(type="text/javascript").
         $(function () {
-            $("[name='led_0']").bootstrapSwitch();
-            $("[name='led_1']").bootstrapSwitch();
-            $("[name='led_2']").bootstrapSwitch();
-
-            $("[name='plug_0']").bootstrapSwitch();
-            $("[name='plug_1']").bootstrapSwitch();
+            var names = ['led_0', 'led_1', 'led_2', 'plug_0', 'plug_1'];
+            for (var i in names) {
+                var bs_switch = $("[name='" + names[i] + "']");
+                bs_switch.bootstrapSwitch();
+                bs_switch.on('switchChange.bootstrapSwitch', function (event, state) {
+                    var bs_switch = $(this);
+                    socket.emit('set-appliance', {'name': bs_switch.attr('name'), value: state});
+                });
+            }
         });
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
     script(type="text/javascript").
@@ -43,10 +46,10 @@ block javascript
                     console.log(data);
                     var bs_switch = $("input[name='" + data.name + "']");
                     if (data.status == "status_on") {
-                        bs_switch.bootstrapSwitch('state', true);
+                        bs_switch.bootstrapSwitch('state', true, true);
                     }
                     else if (data.status == "status_off") {
-                        bs_switch.bootstrapSwitch('state', false);
+                        bs_switch.bootstrapSwitch('state', false, true);
                     }
                 });
             });

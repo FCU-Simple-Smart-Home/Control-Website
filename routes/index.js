@@ -1,6 +1,7 @@
 var express = require('express');
 var merge = require('merge');
 var normalMonitorController = require('../controller/NormalMonitorController.js');
+var applianceControlController = require('../controller/ApplianceControlController.js');
 var router = express.Router();
 
 /* GET home page. */
@@ -17,7 +18,9 @@ router.get('/normal-monitor', function (req, res, next) {
 });
 
 router.get('/appliance-control', function (req, res, next) {
-    res.render('appliance-control', {title: '家電控制 - FCU Simple Smart Home'});
+    applianceControlController.index(function () {
+        res.render('appliance-control', {title: '家電控制 - FCU Simple Smart Home'});
+    });
 });
 
 module.exports = router;

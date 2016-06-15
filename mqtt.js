@@ -17,11 +17,17 @@ exports.initMqttClient = function (host) {
         client.subscribe("sensor_humidity");
         client.subscribe("sensor_gas");
         client.subscribe("sensor_co");
+        
+        client.subscribe("led_0");
+        client.subscribe("led_1");
+        client.subscribe("led_2");
+        client.subscribe("plug_0");
+        client.subscribe("plug_1");
     });
 
     client.on('message', function (topic, message, packet) {
         var msg = message.toString();
-        console.log(topic, msg);
+        //console.log(topic, msg);
 
         if (topic == 'sensor_temperature') {
             temperature.saveTemperature(parseInt(msg), function (val, saved) {
@@ -43,5 +49,21 @@ exports.initMqttClient = function (host) {
                 socket.updateNormalMonitorChart({chart: 'chart_co', val: val, saved: saved})
             });
         }
+        else if (
+            topic == 'led_0' || 
+            topic == 'led_1' || 
+            topic == 'led_2' || 
+            topic == 'plug_0' || 
+            topic == 'plug_1') {
+            
+            // 發送訊息到客戶端更新
+            if (msg == "status_on" || msg == "status_off") {
+                socket.updateApplianceStatus('appliance-control', topic, msg);
+            }
+        }
     });
+};
+
+exports.publish = function (topic, message) {
+    client.publish(topic, message);
 };

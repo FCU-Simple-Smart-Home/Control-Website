@@ -31,3 +31,23 @@ block javascript
             $("[name='plug_0']").bootstrapSwitch();
             $("[name='plug_1']").bootstrapSwitch();
         });
+    script(src="https://cdn.socket.io/socket.io-1.4.5.js")
+    script(type="text/javascript").
+        $(function () {
+            socket = io("http://127.0.0.1:3001");
+
+            socket.on("connect", function () {
+                socket.emit('add-channel', 'appliance-control');
+
+                socket.on('update-appliance', function (data) {
+                    console.log(data);
+                    var bs_switch = $("input[name='" + data.name + "']");
+                    if (data.status == "status_on") {
+                        bs_switch.bootstrapSwitch('state', true);
+                    }
+                    else if (data.status == "status_off") {
+                        bs_switch.bootstrapSwitch('state', false);
+                    }
+                });
+            });
+        });

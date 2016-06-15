@@ -10,3 +10,7 @@ io.on('connection', function (socket) {
 exports.updateNormalMonitorChart = function (data) {
     io.to('normal-monitor').emit('update-chart', data);
 };
+
+exports.updateApplianceStatus = function (page, name, status) {
+    io.to(page).emit('update-appliance', {name: name, status: status});
+};

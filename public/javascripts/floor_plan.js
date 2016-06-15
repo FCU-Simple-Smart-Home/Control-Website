@@ -24,5 +24,15 @@ function resizeRoom() {
             'transform': transform
         });
     }
+}
 
+function updateRoomStatus(index, status) {
+    if (0 <= index && index <= 1) {
+        if (status == 'enable') {
+            $('#room' + index).css('background-color', 'rgba(0, 255, 0, 0.5)');
+        }
+        else if (status == 'disable') {
+            $('#room' + index).css('background-color', 'inherit');
+        }
+    }
 }

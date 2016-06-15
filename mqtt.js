@@ -23,6 +23,9 @@ exports.initMqttClient = function (host) {
         client.subscribe("led_2");
         client.subscribe("plug_0");
         client.subscribe("plug_1");
+
+        client.subscribe("sensor_human_infrared_0");
+        client.subscribe("sensor_human_infrared_1");
     });
 
     client.on('message', function (topic, message, packet) {
@@ -59,6 +62,11 @@ exports.initMqttClient = function (host) {
             // 發送訊息到客戶端更新
             if (msg == "status_on" || msg == "status_off") {
                 socket.updateApplianceStatus('appliance-control', topic, msg);
+            }
+        }
+        else if (topic == 'sensor_human_infrared_0' || topic == 'sensor_human_infrared_1') {
+            if (msg == "enable" || msg == "disable") {
+                socket.updateSensorStatus('normal-monitor', topic, msg);
             }
         }
     });

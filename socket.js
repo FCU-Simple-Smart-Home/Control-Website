@@ -23,3 +23,7 @@ exports.updateNormalMonitorChart = function (data) {
 exports.updateApplianceStatus = function (page, name, status) {
     io.to(page).emit('update-appliance', {name: name, status: status});
 };
+
+exports.updateSensorStatus = function (page, name, status) {
+    io.to(page).emit('update-sensor', {name: name, status: status});
+};

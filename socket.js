@@ -6,10 +6,13 @@ io.on('connection', function (socket) {
     console.log('使用者連入');
     socket.on('add-channel', function (channel) {
         socket.join(channel);
-        
+
         if (channel == 'normal-monitor') {
             mqtt.publish('sensor_human_infrared_0', 'status');
             mqtt.publish('sensor_human_infrared_1', 'status');
+
+            mqtt.publish('fire_detect', 'status');
+            mqtt.publish('window_detect', 'status');
         }
         else if (channel == 'appliance-control') {
             mqtt.publish('led_0', 'status');

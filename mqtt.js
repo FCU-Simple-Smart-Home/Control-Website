@@ -26,6 +26,9 @@ exports.initMqttClient = function (host) {
 
         client.subscribe("sensor_human_infrared_0");
         client.subscribe("sensor_human_infrared_1");
+
+        client.subscribe("fire_detect");
+        client.subscribe("window_detect");
     });
 
     client.on('message', function (topic, message, packet) {
@@ -64,7 +67,13 @@ exports.initMqttClient = function (host) {
                 socket.updateApplianceStatus('appliance-control', topic, msg);
             }
         }
-        else if (topic == 'sensor_human_infrared_0' || topic == 'sensor_human_infrared_1') {
+        else if (
+            topic == 'sensor_human_infrared_0' ||
+            topic == 'sensor_human_infrared_1' ||
+            topic == 'fire_detect' ||
+            topic == 'window_detect' ) {
+            
+            // 發送訊息到客戶端更新
             if (msg == "enable" || msg == "disable") {
                 socket.updateSensorStatus('normal-monitor', topic, msg);
             }

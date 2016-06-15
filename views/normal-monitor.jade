@@ -21,10 +21,10 @@ block content
         h2 偵測器
         ul(class="list-group")
             li(class="list-group-item")
-                i(class="fa fa-circle fa-lg" style="color: gray;")
+                i(id="fire_detect" class="fa fa-circle fa-lg" style="color: gray;")
                 | &nbsp;火災偵測
             li(class="list-group-item")
-                i(class="fa fa-circle fa-lg" style="color: gray;")
+                i(id="window_detect" class="fa fa-circle fa-lg" style="color: gray;")
                 | &nbsp;窗戶偵測
 
         h2 偵測器資料&nbsp;
@@ -114,6 +114,20 @@ block javascript
                     else if (data.name == 'sensor_human_infrared_1') {
                         updateRoomStatus(1, data.status);
                     }
+                    else if (data.name == 'fire_detect' || data.name == 'window_detect') {
+                        updateCircleColor(data.name, data.status);
+                    }
                 })
             });
         });
+
+    script(type="text/javascript").
+        function updateCircleColor(name, status) {
+            var $circle = $('#' + name);
+            if (status == 'enable') {
+                $circle.css('color', 'red');
+            }
+            else if (status == 'disable') {
+                $circle.css('color', 'gray');
+            }
+        }

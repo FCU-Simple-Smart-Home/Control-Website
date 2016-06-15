@@ -28,7 +28,7 @@ function handleResult(title, result) {
     ];
 
     if (result.length == 0) {
-        data.push(['', 0]);
+        data.push([timestamp.toChartDateString(new Date()), 0]);
     }
 
     for (var i in result) {

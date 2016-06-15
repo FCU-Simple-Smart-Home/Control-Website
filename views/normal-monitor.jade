@@ -30,6 +30,7 @@ block content
             div(id="chart_co")
 
 block javascript
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js")
     script(type="text/javascript" src="/javascripts/floor_plan.js")
     script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
     script(type="text/javascript").
@@ -39,33 +40,38 @@ block javascript
 
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(function () {
-                drawLineChart(!{JSON.stringify(data_temperature)}, 'chart_temperature');
-                drawLineChart(!{JSON.stringify(data_humidity)}, 'chart_humidity');
-                drawLineChart(!{JSON.stringify(data_gas)}, 'chart_gas');
-                drawLineChart(!{JSON.stringify(data_co)}, 'chart_co');
+                addLineChart(!{JSON.stringify(data_temperature)}, 'chart_temperature');
+                addLineChart(!{JSON.stringify(data_humidity)}, 'chart_humidity');
+                addLineChart(!{JSON.stringify(data_gas)}, 'chart_gas');
+                addLineChart(!{JSON.stringify(data_co)}, 'chart_co');
             });
         });
 
-        function drawLineChart(data, div_name) {
-            var dataTable = google.visualization.arrayToDataTable(data);
-
-            var options = {
-                curveType: 'function',
-                legend: {position: 'none'},
-                hAxis: {
-                    gridlines: {
-                        count: -1,
-                        units: {
-                            days: {format: ['MMM dd']},
-                            hours: {format: ['HH:mm', 'ha']},
-                        }
+        var charts = {};
+        var options = {
+            curveType: 'function',
+            legend: {position: 'none'},
+            hAxis: {
+                gridlines: {
+                    count: -1,
+                    units: {
+                        days: {format: ['MMM dd']},
+                        hours: {format: ['HH:mm', 'ha']},
                     }
                 }
-            };
+            }
+        };
 
+        function addLineChart(data, div_name) {
+            var dataTable = google.visualization.arrayToDataTable(data);
             var chart = new google.visualization.LineChart(document.getElementById(div_name));
 
             chart.draw(dataTable, options);
+
+            charts[div_name] = {
+                table: dataTable,
+                chart: chart
+            };
         }
 
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
@@ -77,7 +83,18 @@ block javascript
                 socket.emit('add-channel', 'normal-monitor');
 
                 socket.on('update-chart', function (data) {
-                    console.log(data);
+                    var chart = charts[data.chart];
+                    if (chart !== undefined) {
+                        var saved = new Date(data.saved);
+
+                        var removeId = chart.table.getFilteredRows([{column: 0, maxValue: moment(saved).subtract(5, 'minutes')}]);
+                        if (removeId.length > 0) {
+                            chart.table.removeRows(removeId[0], removeId.length);
+                        }
+
+                        chart.table.addRows([[saved, data.val]]);
+                        chart.chart.draw(charts[data.chart].table, options);
+                    }
                 });
             });
         });

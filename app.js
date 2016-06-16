@@ -10,7 +10,6 @@ var routes = require('./routes/index');
 var config = require('config');
 var mqtt = require('./mqtt.js');
 mqtt.initMqttClient(config.mqtt.broker.ip);
-var socket = require('./socket.js');
 
 var app = express();
 

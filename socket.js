@@ -1,36 +1,40 @@
 var mqtt = require('./mqtt.js');
 
-var io = require('socket.io')(3001);
+var io = undefined;
 
-io.on('connection', function (socket) {
-    console.log('使用者連入');
-    socket.on('add-channel', function (channel) {
-        socket.join(channel);
+exports.init = function (server) {
+    var io = require('socket.io')(server);
 
-        if (channel == 'normal-monitor') {
-            mqtt.publish('sensor_human_infrared_0', 'status');
-            mqtt.publish('sensor_human_infrared_1', 'status');
+    io.on('connection', function (socket) {
+        console.log('使用者連入');
+        socket.on('add-channel', function (channel) {
+            socket.join(channel);
 
-            mqtt.publish('fire_detect', 'status');
-            mqtt.publish('window_detect', 'status');
-        }
-        else if (channel == 'appliance-control') {
-            mqtt.publish('led_0', 'status');
-            mqtt.publish('led_1', 'status');
-            mqtt.publish('led_2', 'status');
+            if (channel == 'normal-monitor') {
+                mqtt.publish('sensor_human_infrared_0', 'status');
+                mqtt.publish('sensor_human_infrared_1', 'status');
 
-            mqtt.publish('plug_0', 'status');
-            mqtt.publish('plug_1', 'status');
+                mqtt.publish('fire_detect', 'status');
+                mqtt.publish('window_detect', 'status');
+            }
+            else if (channel == 'appliance-control') {
+                mqtt.publish('led_0', 'status');
+                mqtt.publish('led_1', 'status');
+                mqtt.publish('led_2', 'status');
 
-            mqtt.publish('door', 'status');
-            
-            socket.on('set-appliance', function (data) {
-                console.log(data);
-                mqtt.publish(data.name, data.value ? "on" : "off");
-            });
-        }
+                mqtt.publish('plug_0', 'status');
+                mqtt.publish('plug_1', 'status');
+
+                mqtt.publish('door', 'status');
+
+                socket.on('set-appliance', function (data) {
+                    console.log(data);
+                    mqtt.publish(data.name, data.value ? "on" : "off");
+                });
+            }
+        });
     });
-});
+};
 
 exports.updateNormalMonitorChart = function (data) {
     io.to('normal-monitor').emit('update-chart', data);

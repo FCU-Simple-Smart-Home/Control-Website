@@ -3,7 +3,7 @@ var mqtt = require('./mqtt.js');
 var io = undefined;
 
 exports.init = function (server) {
-    var io = require('socket.io')(server);
+    io = require('socket.io')(server);
 
     io.on('connection', function (socket) {
         console.log('使用者連入');

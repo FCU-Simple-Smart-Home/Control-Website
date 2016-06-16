@@ -63,7 +63,7 @@ block javascript
                 socket.emit('add-channel', 'appliance-control');
 
                 socket.on('update-appliance', function (data) {
-                    console.log(data);
+                    // console.log(data);
                     var bs_switch = $("input[name='" + data.name + "']");
                     if (data.status == "status_on") {
                         bs_switch.bootstrapSwitch('state', true, true);

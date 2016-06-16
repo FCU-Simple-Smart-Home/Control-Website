@@ -107,7 +107,7 @@ block javascript
                 });
                 
                 socket.on('update-sensor', function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.name == 'sensor_human_infrared_0') {
                         updateRoomStatus(0, data.status);
                     }

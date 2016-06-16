@@ -21,6 +21,12 @@ block content
         input(type="checkbox" name="plug_1")
         h2 大門
         input(type="checkbox" name="door")
+        h2 跑馬燈
+        div(class="form-inline")
+            div(class="form-group")
+                label(for="message" style="margin-right: 10px;") 訊息
+                input(type="text" class="form-control" id="message" style="margin-right: 10px;" placeholder="Hello world!!!")
+            button(id="send-msg" class="btn btn-default") 設定
 
 block javascript
     script(type="text/javascript" src="javascripts/bootstrap-switch.min.js")
@@ -35,6 +41,18 @@ block javascript
                     socket.emit('set-appliance', {'name': bs_switch.attr('name'), value: state});
                 });
             }
+
+            $("#send-msg").click(function () {
+                $.ajax({
+                    url: '/appliance-control',
+                    type: "POST",
+                    data: {msg: $("#message").val()},
+                    dataType: "json",
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log('error', xhr.status + ': ' + thrownError);
+                    }
+                });
+            });
         });
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
     script(type="text/javascript").

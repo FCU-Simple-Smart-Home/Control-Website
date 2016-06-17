@@ -12,6 +12,13 @@ block content
     div(class='container')
         div(class="page-header")
             h1 一般偵測
+
+        span(class="pull-right")
+            span(id="connect_status")
+                i(class="fa fa-spinner fa-spin" aria-hidden="true")
+                | &nbsp;連線中
+        div(class="clearfix")
+
         h2 人員偵測(平面圖)
         div(class="text-center")
             div(style="position: relative; display: inline-block")
@@ -86,9 +93,15 @@ block javascript
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
     script(type="text/javascript").
         $(function () {
+            var $connect_status = $('#connect_status');
+
             socket = io("//" + window.location.hostname + (location.port == "" ? "" : ":" + location.port));
 
             socket.on("connect", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-success');
+                $connect_status.html('<i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;連線成功');
+
                 socket.emit('add-channel', 'normal-monitor');
 
                 socket.on('update-chart', function (data) {
@@ -118,6 +131,20 @@ block javascript
                         updateCircleColor(data.name, data.status);
                     }
                 })
+            });
+
+            // 連線失敗提示
+            socket.on("connect_error", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-danger');
+                $connect_status.html('<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;連線失敗');
+            });
+
+            // 連線中提示
+            socket.on("reconnecting", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-danger');
+                $connect_status.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>&nbsp;連線中');
             });
         });
 

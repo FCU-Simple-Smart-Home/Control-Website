@@ -32,4 +32,10 @@ router.post('/appliance-control', function (req, res) {
     res.json({success:1});
 });
 
+router.get('/clients-status', function (req, res, next) {
+    res.render('clients-status', {
+        title: '裝置狀態 - FCU Simple Smart Home'
+    });
+})
+
 module.exports = router;

@@ -13,6 +13,18 @@ block content
 
         ul(class="list-group")
             li(class="list-group-item")
+                i(id="sensor_box" class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;感測BOX
+            li(class="list-group-item")
+                i(id="double_plug" class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;插座控制
+            li(class="list-group-item")
+                i(id="indoor_control" class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;室內控制
+            li(class="list-group-item")
+                i(id="marquee_and_door" class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;跑馬燈+門
+            li(class="list-group-item")
                 i(id="g_paint_control" class="fa fa-circle fa-lg" style="color: gray;")
                 | &nbsp;G-Print 電風扇控制
 
@@ -34,7 +46,7 @@ block javascript
                 socket.on('update-client', function (data) {
                     var $circle = $("#" + data.name);
                     if ($circle !== undefined) {
-                        $circle.css('color', 'green');
+                        $circle.css('color', '#4CD500');
                     }
                 })
             });

@@ -34,6 +34,15 @@ block content
                 label(for="message" style="margin-right: 10px;") 訊息
                 input(type="text" class="form-control" id="message" style="margin-right: 10px;" placeholder="Hello world!!!")
             button(id="send-msg" class="btn btn-default") 設定
+        h2 G-Paint
+        h3 電風扇
+        div(id="fan_control" class="btn-group btn-group-lg" role="group")
+            button(type="button" class="btn btn-default" id="fan_steering") 轉向
+            button(type="button" class="btn btn-default" id="fan_timing") 定時
+            button(type="button" class="btn btn-danger" id="fan_close") 關
+            button(type="button" class="btn btn-default" id="fan_super") 超強
+            button(type="button" class="btn btn-default" id="fan_gale") 強風
+            button(type="button" class="btn btn-default" id="fan_breeze") 微風
 
 block javascript
     script(type="text/javascript" src="javascripts/bootstrap-switch.min.js")
@@ -60,7 +69,33 @@ block javascript
                     }
                 });
             });
+
+            $('#fan_control').find('button').click(function() {
+                var id = $(this).attr('id');
+                if (id == 'fan_steering') {
+                    send_fan_command('steering');
+                }
+                else if (id == 'fan_timing') {
+                    send_fan_command('timing');
+                }
+                else if (id == 'fan_close') {
+                    send_fan_command('close');
+                }
+                else if (id == 'fan_super') {
+                    send_fan_command('super');
+                }
+                else if (id == 'fan_gale') {
+                    send_fan_command('gale');
+                }
+                else if (id == 'fan_breeze') {
+                    send_fan_command('breeze');
+                }
+            });
         });
+
+        function send_fan_command(command) {
+            socket.emit('fan_ir_command', command);
+        }
     script(src="https://cdn.socket.io/socket.io-1.4.5.js")
     script(type="text/javascript").
         $(function () {

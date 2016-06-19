@@ -31,6 +31,10 @@ exports.init = function (server) {
                     console.log(data);
                     mqtt.publish(data.name, data.value ? "on" : "off");
                 });
+
+                socket.on('fan_ir_command', function (data) {
+                    mqtt.publish('fan_ir_command', data);
+                });
             }
         });
     });

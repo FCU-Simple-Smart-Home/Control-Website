@@ -31,6 +31,8 @@ exports.initMqttClient = function (host) {
         client.subscribe("window_detect");
 
         client.subscribe("door");
+
+        client.subscribe("clients_status");
     });
 
     client.on('message', function (topic, message, packet) {
@@ -80,6 +82,9 @@ exports.initMqttClient = function (host) {
             if (msg == "enable" || msg == "disable") {
                 socket.updateSensorStatus('normal-monitor', topic, msg);
             }
+        }
+        else if (topic == 'clients_status') {
+            socket.updateClientStatus(msg);
         }
     });
 };

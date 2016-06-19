@@ -1,1 +1,55 @@
 extends layout
+
+block content
+    div(class='container' style="margin-bottom: 50px;")
+        div(class="page-header")
+            h1 裝置狀態
+
+        span(class="pull-right")
+            span(id="connect_status")
+                i(class="fa fa-spinner fa-spin" aria-hidden="true")
+                | &nbsp;連線中
+        div(class="clearfix")
+
+        ul(class="list-group")
+            li(class="list-group-item")
+                i(id="g_paint_control" class="fa fa-circle fa-lg" style="color: gray;")
+                | &nbsp;G-Print 電風扇控制
+
+block javascript
+    script(src="https://cdn.socket.io/socket.io-1.4.5.js")
+    script(type="text/javascript").
+        $(function () {
+            var $connect_status = $('#connect_status');
+
+            socket = io("//" + window.location.hostname + (location.port == "" ? "" : ":" + location.port));
+
+            socket.on("connect", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-success');
+                $connect_status.html('<i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;連線成功');
+
+                socket.emit('add-channel', 'clients-status');
+
+                socket.on('update-client', function (data) {
+                    var $circle = $("#" + data.name);
+                    if ($circle !== undefined) {
+                        $circle.css('color', 'green');
+                    }
+                })
+            });
+
+            // 連線失敗提示
+            socket.on("connect_error", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-danger');
+                $connect_status.html('<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;連線失敗');
+            });
+
+            // 連線中提示
+            socket.on("reconnecting", function () {
+                $connect_status.removeClass();
+                $connect_status.addClass('text-danger');
+                $connect_status.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>&nbsp;連線中');
+            });
+        });

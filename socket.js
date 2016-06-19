@@ -36,6 +36,9 @@ exports.init = function (server) {
                     mqtt.publish('fan_ir_command', data);
                 });
             }
+            else if (channel == 'clients-status') {
+                mqtt.publish('clients_status', 'status');
+            }
         });
     });
 };
@@ -50,4 +53,8 @@ exports.updateApplianceStatus = function (page, name, status) {
 
 exports.updateSensorStatus = function (page, name, status) {
     io.to(page).emit('update-sensor', {name: name, status: status});
+};
+
+exports.updateClientStatus = function (name) {
+    io.to('clients-status').emit('update-client', {name: name});
 };
